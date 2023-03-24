@@ -1,37 +1,43 @@
-function createPixel(pixelPercentageSize) {
+function createPixel(width, height) {
     const pixel = document.createElement("div");
-    pixel.style.width = `${pixelPercentageSize}%`;
-    pixel.style.height = `${pixelPercentageSize}%`;
-    pixel.classList.add("canvasCell");
+    pixel.style.width = `${width}%`;
+    pixel.style.height = `${height}%`;
+    pixel.classList.add("canvas-cell");
     pixel.addEventListener("mouseenter", paintPixel);
     return pixel;
 }
 
-function clearAndRepopulateCanvas(resolution) {
+function clearAndRepopulateCanvas(numberOfRows, numberOfColumns) {
     clearCanvas();
-    populateCanvas(resolution);
+    populateCanvas(numberOfRows, numberOfColumns);
 }
 
 function clearCanvas() {
     canvas.textContent = "";
 }
 
-function populateCanvas(resolution) {
+function populateCanvas(numberOfRows, numberOfColumns) {
     const fragment = document.createDocumentFragment();
-    const totalCellsNumber = resolution ** 2;
-    const cellPercentageSize = 100 / canvasResolutionInPixels;
-    for (let column = 0; column < totalCellsNumber; column++) {
-        const pixel = createPixel(cellPercentageSize);
-        fragment.append(pixel);
+    const cellPercentageHeight = 100 / numberOfRows;
+    const cellPercentageWidth = 100 / numberOfColumns;
+    for (let column = 0; column < numberOfColumns; column++) {
+        for (let row = 0; row < numberOfRows; row++) {
+            const pixel = createPixel(
+                cellPercentageHeight,
+                cellPercentageWidth
+            );
+            fragment.append(pixel);
+        }
     }
     canvas.append(fragment);
 }
 
 function paintPixel() {
-    this.style.background = "black";
+    this.style.background = "#333";
 }
-
+// debugger;
 const canvas = document.querySelector(".canvas");
 const canvasWidth = canvas.getBoundingClientRect().width;
-const canvasResolutionInPixels = 50;
-clearAndRepopulateCanvas(canvasResolutionInPixels);
+const canvasRowsN = 50;
+const canvasColumnsN = canvasRowsN * 1.2;
+clearAndRepopulateCanvas(canvasColumnsN, canvasRowsN);
