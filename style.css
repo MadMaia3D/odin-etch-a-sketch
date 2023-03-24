@@ -21,8 +21,3 @@ body {
     display: flex;
     flex-wrap: wrap;
 }
-.canvasCell {
-    outline: 1px solid black;
-    /* flex-grow: 0; */
-    /* flex-shrink: 0; */
-}
