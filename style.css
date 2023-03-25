@@ -5,12 +5,13 @@
 :root {
     --title-font: "Lobster", "Alkatra", cursive;
     /* shapes */
-    --device-top-borders: 10vh;
-    --device-bottom-borders: 2vh;
-    --size-canvas-width: 70vh;
-    --size-canvas-height: 60vh;
-    --size-device-border: 10vh;
-    --radius-canvas: 3vh;
+    --device-top-radius: 97px;
+    --device-bottom-radius: 19px;
+    --size-canvas-width: 678px;
+    --size-canvas-height: 581px;
+    --size-device-border: 96px;
+    --radius-canvas: 24px;
+    /*  9,69 */
     /* colors */
     --color-device: #ce0c15;
     --color-golden: #dd9f32;
@@ -42,9 +43,9 @@ body {
     width: calc(var(--size-canvas-width) + var(--size-device-border) * 2);
     height: calc(var(--size-canvas-height) + var(--size-device-border) * 3);
     background: var(--color-device);
-    border-radius: var(--device-bottom-borders);
-    border-top-left-radius: var(--device-top-borders);
-    border-top-right-radius: var(--device-top-borders);
+    border-radius: var(--device-bottom-radius);
+    border-top-left-radius: var(--device-top-radius);
+    border-top-right-radius: var(--device-top-radius);
     box-shadow: var(--device-emboss-light), var(--device-emboss-shadow);
 }
 .title {
@@ -58,7 +59,7 @@ body {
     text-transform: uppercase;
     font-family: var(--title-font);
     letter-spacing: 3px;
-    font-size: 5vh;
+    font-size: 48px;
 
     text-shadow: 2px 2px 5px black;
 }
