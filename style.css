@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Alkatra:wght@700&family=Lobster&family=Roboto:wght@400;500&display=swap");
 * {
+    padding: 0;
+    margin: 0;
     box-sizing: border-box;
 }
 :root {
@@ -14,7 +16,9 @@
     --radius-canvas: 24px;
     /* colors */
     --color-device: #ce0c15;
+    --color-device-dark: hsl(357, 89%, 38%);
     --color-golden: #dd9f32;
+    --color-golden-dark: hsl(38, 72%, 48%);
     --color-canvas: #babac4;
     /* device emboss effects */
     --device-emboss-light: inset 0.3rem 0.3rem 0.5rem 0.3rem
@@ -32,8 +36,6 @@
     --buttons-outside-emboss-shadow: -2px -2px 2px rgba(0, 0, 0, 0.3);
 }
 body {
-    margin: 0;
-    padding: 0;
     background: #eee;
 }
 .container {
@@ -44,6 +46,7 @@ body {
     justify-content: center;
     align-items: center;
 }
+/* ########## DEVICE BODY ########## */
 .etch-a-sketch {
     display: flex;
     flex-direction: column;
@@ -71,6 +74,7 @@ body {
 
     text-shadow: 2px 2px 5px black;
 }
+/* ########## CANVAS ########## */
 .canvas {
     margin: 0 auto;
     width: var(--size-canvas-width);
@@ -89,7 +93,7 @@ body {
 .canvas-cell {
     mix-blend-mode: multiply;
 }
-
+/* ########## CONTROLS ########## */
 .controls {
     padding: 0 var(--size-device-border) 0 var(--size-device-border);
     display: flex;
@@ -100,20 +104,24 @@ body {
         Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
         sans-serif;
 }
-.controls span {
+.option {
+    display: flex;
+    align-items: center;
+}
+.option label {
     color: var(--color-golden);
     text-transform: capitalize;
     font-weight: 500;
     letter-spacing: 1px;
 }
-.controls button {
-    width: 5rem;
-    height: 2rem;
+.option button {
+    width: 80px;
+    height: 32px;
     border: none;
-    border-radius: 0.5rem;
+    border-radius: 8px;
     background: var(--color-golden);
     color: var(--color-device);
-    margin-left: 0.5rem;
+    margin-left: 8px;
     text-transform: capitalize;
     font-weight: bold;
     letter-spacing: 1px;
@@ -123,7 +131,59 @@ body {
 
     cursor: pointer;
 }
-
+.option button:active {
+    background: var(--color-golden-dark);
+    color: var(--color-device-dark);
+}
+/* ########## CONTROLE COLOR ########## */
+.color-picker {
+    background: black;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    margin-left: 8px;
+    box-shadow: var(--buttons-inside-emboss-light),
+        var(--buttons-inside-emboss-shadow), var(--buttons-outside-emboss-light),
+        var(--buttons-outside-emboss-shadow);
+    cursor: pointer;
+}
+/* ########## CONTROL RANGE ########## */
+.slider {
+    margin: 5px 0 0 5px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    position: relative;
+    outline: none;
+    cursor: pointer;
+    width: 125px;
+    background: none;
+}
+.slider::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    background: var(--color-device-dark);
+    --var-shadow: inset 2px 2px 1px rgba(53, 0, 0, 0.5);
+    --var-highlight: inset -2px -2px 1px rgba(255, 44, 44, 0.5);
+    box-shadow: var(--var-shadow), var(--var-highlight);
+    height: 8px;
+    border-radius: 4px;
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    margin: -4px 0 0 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-golden);
+}
+/* ########## FOOTER     ########## */
 footer {
     width: 100vw;
     padding: 0.5rem;

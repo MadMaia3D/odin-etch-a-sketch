@@ -17,12 +17,17 @@
             <div class="canvas"></div>
             <div class="controls">
                 <div class="option option-color">
-                    <span>color</span>
+                    <label>color</label>
                     <button>classic</button>
+                    <div class="color-picker"></div>
                 </div>
                 <div class="option option-mode">
-                    <span>mode</span>
+                    <label>mode</label>
                     <button>draw</button>
+                </div>
+                <div class="option option-mode">
+                    <label for="resolution">resolution</label>
+                    <input class="slider" id="resolution" type="range" min="10" max="100" step="10" value="50">
                 </div>
                 <div class="option option-shake">
                     <button>shake</button>
