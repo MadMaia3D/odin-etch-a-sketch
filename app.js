@@ -38,6 +38,6 @@ function paintPixel() {
 // debugger;
 const canvas = document.querySelector(".canvas");
 const canvasWidth = canvas.getBoundingClientRect().width;
-const canvasRowsN = 50;
-const canvasColumnsN = canvasRowsN * 1.2;
+const canvasRowsN = 72;
+const canvasColumnsN = (canvasRowsN * 4) / 3;
 clearAndRepopulateCanvas(canvasColumnsN, canvasRowsN);

@@ -6,11 +6,11 @@
     --title-font: "Lobster", "Alkatra", cursive;
     --font: "Roboto", sans-serif;
     /* shapes */
+    --size-canvas-height: 550px;
+    --size-canvas-width: calc(var(--size-canvas-height) * 4 / 3);
+    --size-device-border: 96px;
     --device-top-radius: 97px;
     --device-bottom-radius: 19px;
-    --size-canvas-width: 678px;
-    --size-canvas-height: 581px;
-    --size-device-border: 96px;
     --radius-canvas: 24px;
     /* colors */
     --color-device: #ce0c15;
@@ -25,6 +25,11 @@
     --canvas-emboss-light: 0.3rem 0.3rem 0.5rem 0.3rem rgba(255, 255, 255, 0.3);
     --canvas-emboss-shadow: -0.3rem -0.3rem 0.5rem 0.3rem rgba(0, 0, 0, 0.3);
     --canvas-shadow: inset 0rem 0rem 0.5rem black;
+    /* button emboss effects */
+    --buttons-inside-emboss-light: inset 2px 2px 2px rgba(255, 255, 255, 0.3);
+    --buttons-inside-emboss-shadow: inset -2px -2px 2px rgba(0, 0, 0, 0.3);
+    --buttons-outside-emboss-light: 2px 2px 2px rgba(255, 255, 255, 0.3);
+    --buttons-outside-emboss-shadow: -2px -2px 2px rgba(0, 0, 0, 0.3);
 }
 body {
     margin: 0;
@@ -40,6 +45,8 @@ body {
     align-items: center;
 }
 .etch-a-sketch {
+    display: flex;
+    flex-direction: column;
     flex-shrink: 0;
     width: calc(var(--size-canvas-width) + var(--size-device-border) * 2);
     height: calc(var(--size-canvas-height) + var(--size-device-border) * 3);
@@ -72,6 +79,8 @@ body {
     border-radius: var(--radius-canvas);
     overflow: hidden;
 
+    cursor: crosshair;
+
     display: flex;
     flex-wrap: wrap;
     box-shadow: var(--canvas-emboss-light), var(--canvas-emboss-shadow),
@@ -80,6 +89,41 @@ body {
 .canvas-cell {
     mix-blend-mode: multiply;
 }
+
+.controls {
+    padding: 0 var(--size-device-border) 0 var(--size-device-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+        sans-serif;
+}
+.controls span {
+    color: var(--color-golden);
+    text-transform: capitalize;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+.controls button {
+    width: 5rem;
+    height: 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: var(--color-golden);
+    color: var(--color-device);
+    margin-left: 0.5rem;
+    text-transform: capitalize;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-shadow: var(--buttons-inside-emboss-light),
+        var(--buttons-inside-emboss-shadow), var(--buttons-outside-emboss-light),
+        var(--buttons-outside-emboss-shadow);
+
+    cursor: pointer;
+}
+
 footer {
     width: 100vw;
     padding: 0.5rem;
