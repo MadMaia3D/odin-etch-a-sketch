@@ -33,6 +33,9 @@ function populateCanvas(numberOfRows, numberOfColumns) {
 }
 
 function paintPixel() {
+    if (inputMethod === "click" && isMouseClicked === false) {
+        return;
+    }
     if (mode === "erase") {
         this.style.background = "";
         return;
@@ -53,4 +56,22 @@ const modeButton = document.querySelector(".option.mode button");
 modeButton.addEventListener("click", (event) => {
     mode = mode === "draw" ? "erase" : "draw";
     event.currentTarget.textContent = mode;
+});
+// #################### INPUT ####################
+let inputMethod = "hover";
+let isMouseClicked = false;
+
+const inputButton = document.querySelector(".option.input button");
+
+inputButton.addEventListener("click", setInputMethod);
+function setInputMethod(event) {
+    inputMethod = inputMethod === "hover" ? "click" : "hover";
+    event.currentTarget.textContent = inputMethod;
+}
+
+document.addEventListener("mousedown", () => {
+    isMouseClicked = true;
+});
+document.addEventListener("mouseup", () => {
+    isMouseClicked = false;
 });
