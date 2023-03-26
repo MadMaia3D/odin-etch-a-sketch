@@ -47,9 +47,9 @@ function paintPixel() {
     if (colorMode === "rainbow") paintColor = getRandomColor(0, 360);
     if (colorMode === "rainbowSoft") paintColor = getRandomRainbowColorSoft();
     if (colorMode === "warm") paintColor = getRandomColor(0, 50);
-    if (colorMode === "warmSoft") paintColor = getRandomWarmColorSoft();
+    if (colorMode === "warmSoft") paintColor = getRandomColorSoft(0, 50);
     if (colorMode === "cold") paintColor = getRandomColor(150, 250);
-    if (colorMode === "coldSoft") paintColor = getRandomColdColorSoft();
+    if (colorMode === "coldSoft") paintColor = getRandomColorSoft(150, 250);
 
     this.style.background = paintColor;
 }
@@ -122,17 +122,9 @@ function setColorMethod(event) {
     }
 }
 // #################### COLOR MODES ####################
-let softWarmHue = 0;
-let isWarmHueIncreasing = true;
-const softWarmChangeRate = 5;
-
-let softColdHue = 200;
-let isColdHueIncreasing = true;
-const softColdChangeRate = 5;
-
+let softHue = 0;
+let isSoftHueIncreasing = true;
 let softRainbowHue = 0;
-const softRainbowChangeRate = 10;
-
 const saturation = "100%";
 const lightness = "60%";
 
@@ -142,28 +134,18 @@ function getRandomColor(minHue, maxHue) {
     return `HSL(${hue},${saturation},${lightness})`;
 }
 
-function getRandomWarmColorSoft() {
-    if (softWarmHue > 50) isWarmHueIncreasing = false;
-    if (softWarmHue < 0) isWarmHueIncreasing = true;
+function getRandomColorSoft(minHue, maxHue, changeRate = 5) {
+    if (softHue > maxHue) isSoftHueIncreasing = false;
+    if (softHue < minHue) isSoftHueIncreasing = true;
 
-    softWarmHue += isWarmHueIncreasing
-        ? softWarmChangeRate
-        : -softWarmChangeRate;
-    return `HSL(${softWarmHue},${saturation},${lightness})`;
+    softHue = Math.max(minHue, Math.min(softHue, maxHue));
+    softHue += isSoftHueIncreasing ? changeRate : -changeRate;
+
+    return `HSL(${softHue},${saturation},${lightness})`;
 }
 
-function getRandomColdColorSoft() {
-    if (softColdHue > 250) isColdHueIncreasing = false;
-    if (softColdHue < 200) isColdHueIncreasing = true;
-
-    softColdHue += isColdHueIncreasing
-        ? softColdChangeRate
-        : -softColdChangeRate;
-    return `HSL(${softColdHue},${saturation},${lightness})`;
-}
-
-function getRandomRainbowColorSoft() {
-    softRainbowHue += softRainbowChangeRate;
+function getRandomRainbowColorSoft(changeRate = 10) {
+    softRainbowHue += changeRate;
     return `HSL(${softRainbowHue},${saturation},${lightness})`;
 }
 
