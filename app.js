@@ -43,6 +43,7 @@ function paintPixel() {
 
     let paintColor = "";
     if (colorMode === "classic") paintColor = classicColor;
+    if (colorMode === "color") paintColor = getColorPickerColor();
     if (colorMode === "warm") paintColor = getRandomWarmColor();
     if (colorMode === "cold") paintColor = getRandomColdColor();
     if (colorMode === "rainbow") paintColor = getRandomRainbowColor();
@@ -126,4 +127,7 @@ function getRandomRainbowColor() {
     const s = "100%";
     const l = "60%";
     return `HSL(${h},${s},${l})`;
+}
+function getColorPickerColor() {
+    return colorPicker.value;
 }
