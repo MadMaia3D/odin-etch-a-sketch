@@ -33,11 +33,24 @@ function populateCanvas(numberOfRows, numberOfColumns) {
 }
 
 function paintPixel() {
+    if (mode === "erase") {
+        this.style.background = "";
+        return;
+    }
     this.style.background = "#333";
 }
-// debugger;
+
 const canvas = document.querySelector(".canvas");
 const canvasWidth = canvas.getBoundingClientRect().width;
 const canvasRowsN = 72;
 const canvasColumnsN = (canvasRowsN * 4) / 3;
 clearAndRepopulateCanvas(canvasColumnsN, canvasRowsN);
+
+// #################### MODE ####################
+let mode = "draw";
+const modeButton = document.querySelector(".option.mode button");
+
+modeButton.addEventListener("click", (event) => {
+    mode = mode === "draw" ? "erase" : "draw";
+    event.currentTarget.textContent = mode;
+});
