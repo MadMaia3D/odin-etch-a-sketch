@@ -44,11 +44,11 @@ function paintPixel() {
     let paintColor = "";
     if (colorMode === "classic") paintColor = classicColor;
     if (colorMode === "color") paintColor = getColorPickerColor();
-    if (colorMode === "rainbow") paintColor = getRandomRainbowColor();
+    if (colorMode === "rainbow") paintColor = getRandomColor(0, 360);
     if (colorMode === "rainbowSoft") paintColor = getRandomRainbowColorSoft();
-    if (colorMode === "warm") paintColor = getRandomWarmColor();
+    if (colorMode === "warm") paintColor = getRandomColor(0, 50);
     if (colorMode === "warmSoft") paintColor = getRandomWarmColorSoft();
-    if (colorMode === "cold") paintColor = getRandomColdColor();
+    if (colorMode === "cold") paintColor = getRandomColor(150, 250);
     if (colorMode === "coldSoft") paintColor = getRandomColdColorSoft();
 
     this.style.background = paintColor;
@@ -136,13 +136,9 @@ const softRainbowChangeRate = 10;
 const saturation = "100%";
 const lightness = "60%";
 
-function getRandomWarmColor() {
-    const hue = Math.round(Math.random() * 50);
-    return `HSL(${hue},${saturation},${lightness})`;
-}
-
-function getRandomColdColor() {
-    const hue = Math.round(Math.random() * 50 + 200);
+function getRandomColor(minHue, maxHue) {
+    const hueSpan = Math.abs(maxHue - minHue);
+    const hue = Math.round(Math.random() * hueSpan + minHue);
     return `HSL(${hue},${saturation},${lightness})`;
 }
 
@@ -164,11 +160,6 @@ function getRandomColdColorSoft() {
         ? softColdChangeRate
         : -softColdChangeRate;
     return `HSL(${softColdHue},${saturation},${lightness})`;
-}
-
-function getRandomRainbowColor() {
-    const hue = Math.floor(Math.random() * 359);
-    return `HSL(${hue},${saturation},${lightness})`;
 }
 
 function getRandomRainbowColorSoft() {
