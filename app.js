@@ -53,10 +53,12 @@ clearAndRepopulateCanvas(canvasColumnsN, canvasRowsN);
 let mode = "draw";
 const modeButton = document.querySelector(".option.mode button");
 
-modeButton.addEventListener("click", (event) => {
+modeButton.addEventListener("click", setMode);
+
+function setMode(event) {
     mode = mode === "draw" ? "erase" : "draw";
     event.currentTarget.textContent = mode;
-});
+}
 // #################### INPUT ####################
 let inputMethod = "hover";
 let isMouseClicked = false;
