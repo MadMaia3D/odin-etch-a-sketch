@@ -152,3 +152,23 @@ function getRandomRainbowColorSoft(changeRate = 10) {
 function getColorPickerColor() {
     return colorPicker.value;
 }
+
+// #################### ERASE BUTTON ####################
+const eraseButton = document.querySelector(".option.erase button");
+const deviceFrame = document.querySelector(".etch-a-sketch");
+
+eraseButton.addEventListener("click", eraseCanvas);
+deviceFrame.addEventListener("animationend", resetDeviceAnimation);
+
+function eraseCanvas() {
+    for (cell of canvas.children) {
+        cell.style.background = "";
+    }
+
+    deviceFrame.classList.add("shake");
+}
+
+function resetDeviceAnimation(event) {
+    event.currentTarget.classList.remove("shake");
+    event.currentTarget.offsetHeight;
+}
