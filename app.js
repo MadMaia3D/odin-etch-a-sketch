@@ -40,7 +40,14 @@ function paintPixel() {
         this.style.background = "";
         return;
     }
-    this.style.background = "#333";
+
+    let paintColor = "";
+    if (colorMode === "classic") paintColor = classicColor;
+    if (colorMode === "warm") paintColor = getRandomWarmColor();
+    if (colorMode === "cold") paintColor = getRandomColdColor();
+    if (colorMode === "rainbow") paintColor = getRandomRainbowColor();
+
+    this.style.background = paintColor;
 }
 
 const canvas = document.querySelector(".canvas");
@@ -79,12 +86,10 @@ document.addEventListener("mouseup", () => {
 });
 // #################### COLOR BUTTON ####################
 
-let colorMode = "classic";
 let colorModeIndex = 0;
+let colorMode = "classic";
 const COLOR_MODE_LIST = ["classic", "color", "rainbow", "warm", "cold"];
-
-const classicColor = "#333";
-const currentColor = "#000";
+const classicColor = "#444";
 
 const colorButton = document.querySelector(".option.color button");
 const colorPicker = document.querySelector(".option.color .color-picker");
@@ -95,11 +100,30 @@ function setColorMethod(event) {
     colorModeIndex++;
     if (colorModeIndex >= COLOR_MODE_LIST.length) colorModeIndex = 0;
 
-    const nextColorMode = COLOR_MODE_LIST[colorModeIndex];
-    event.currentTarget.textContent = nextColorMode;
-    if (nextColorMode === "color") {
+    colorMode = COLOR_MODE_LIST[colorModeIndex];
+    event.currentTarget.textContent = colorMode;
+    if (colorMode === "color") {
         colorPicker.classList.remove("hide");
     } else {
         colorPicker.classList.add("hide");
     }
+}
+
+function getRandomWarmColor() {
+    const h = Math.round(Math.random() * 60);
+    const s = "100%";
+    const l = "60%";
+    return `HSL(${h},${s},${l})`;
+}
+function getRandomColdColor() {
+    const h = Math.round(Math.random() * 50 + 200);
+    const s = "100%";
+    const l = "60%";
+    return `HSL(${h},${s},${l})`;
+}
+function getRandomRainbowColor() {
+    const h = Math.floor(Math.random() * 259);
+    const s = "100%";
+    const l = "60%";
+    return `HSL(${h},${s},${l})`;
 }
