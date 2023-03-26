@@ -77,3 +77,29 @@ document.addEventListener("mousedown", () => {
 document.addEventListener("mouseup", () => {
     isMouseClicked = false;
 });
+// #################### COLOR BUTTON ####################
+
+let colorMode = "classic";
+let colorModeIndex = 0;
+const COLOR_MODE_LIST = ["classic", "color", "rainbow", "warm", "cold"];
+
+const classicColor = "#333";
+const currentColor = "#000";
+
+const colorButton = document.querySelector(".option.color button");
+const colorPicker = document.querySelector(".option.color .color-picker");
+
+colorButton.addEventListener("click", setColorMethod);
+
+function setColorMethod(event) {
+    colorModeIndex++;
+    if (colorModeIndex >= COLOR_MODE_LIST.length) colorModeIndex = 0;
+
+    const nextColorMode = COLOR_MODE_LIST[colorModeIndex];
+    event.currentTarget.textContent = nextColorMode;
+    if (nextColorMode === "color") {
+        colorPicker.classList.remove("hide");
+    } else {
+        colorPicker.classList.add("hide");
+    }
+}
