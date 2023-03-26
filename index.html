@@ -16,21 +16,38 @@
             <div class="title">etch a sketch</div>
             <div class="canvas"></div>
             <div class="controls">
-                <div class="option option-color">
-                    <label>color</label>
-                    <button>classic</button>
-                    <label for="color-picker"></label>
-                    <input id="color-picker" class="color-picker" type="color">
-                </div>
-                <div class="option option-mode">
+
+                <form class="option mode">
                     <label>mode</label>
                     <button>draw</button>
-                </div>
-                <div class="option option-mode">
+                </form>
+
+                <form class="option input">
+                    <label>input</label>
+                    <button>hover</button>
+                </form>
+
+                <form class="option color">
+                    <label>color</label>
+                    <div>
+                        <button>classic</button>
+                        <label for="color-picker"></label>
+                        <input id="color-picker" class="color-picker hide" type="color">
+                    </div>
+                </form>
+
+                <form action="" class="option opacity">
+                    <label for="opacity">opacity</label>
+                    <input class="slider" id="opacity" type="range" min="10" max="100" step="10" value="100">
+                </form>
+
+                <form action="" class="option resolution">
                     <label for="resolution">resolution</label>
                     <input class="slider" id="resolution" type="range" min="10" max="100" step="10" value="50">
-                </div>
+                </form>
+
                 <div class="option option-shake">
+                    <label></label>
                     <button>shake</button>
                 </div>
 
