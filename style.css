@@ -59,6 +59,9 @@ body {
     border-top-right-radius: var(--device-top-radius);
     box-shadow: var(--device-emboss-light), var(--device-emboss-shadow);
 }
+.shake {
+    animation: shake 1s ease-in-out;
+}
 .title {
     height: var(--size-device-border);
 
@@ -74,6 +77,37 @@ body {
 
     text-shadow: 2px 2px 5px black;
 }
+/* ########## DEVICE BODY ANIMATION ########## */
+@keyframes shake {
+    0% {
+        transform: translate(0, 0);
+    }
+    20% {
+        transform: translate(20px, 0px);
+    }
+    30% {
+        transform: translate(-50px, 0px);
+    }
+    40% {
+        transform: translate(75px, 0px);
+    }
+    50% {
+        transform: translate(-100px, 0px);
+    }
+    60% {
+        transform: translate(75px, 0px);
+    }
+    70% {
+        transform: translate(-50px, 0px);
+    }
+    80% {
+        transform: translate(20px, 0px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+
 /* ########## CANVAS ########## */
 .canvas {
     margin: 0 auto;
@@ -92,6 +126,7 @@ body {
 }
 .canvas-cell {
     mix-blend-mode: multiply;
+    transition: all 0.1s;
 }
 /* ########## CONTROLS ########## */
 .controls {
@@ -135,17 +170,27 @@ body {
     background: var(--color-golden-dark);
     color: var(--color-device-dark);
 }
-/* ########## CONTROLE COLOR ########## */
+/* ########## CONTROL COLOR ########## */
 .color-picker {
-    background: black;
-    border-radius: 50%;
+    margin-left: 8px;
     width: 32px;
     height: 32px;
-    margin-left: 8px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+}
+.color-picker::-webkit-color-swatch-wrapper {
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+    border: none;
+}
+.color-picker::-webkit-color-swatch {
+    border-radius: 50%;
+    border: none;
     box-shadow: var(--buttons-inside-emboss-light),
         var(--buttons-inside-emboss-shadow), var(--buttons-outside-emboss-light),
         var(--buttons-outside-emboss-shadow);
-    cursor: pointer;
 }
 /* ########## CONTROL RANGE ########## */
 .slider {
@@ -157,7 +202,7 @@ body {
     position: relative;
     outline: none;
     cursor: pointer;
-    width: 125px;
+    width: 100px;
     background: none;
 }
 .slider::-webkit-slider-runnable-track {
@@ -183,7 +228,7 @@ body {
     border-radius: 50%;
     background: var(--color-golden);
 }
-/* ########## FOOTER     ########## */
+/* ########## FOOTER ########## */
 footer {
     width: 100vw;
     padding: 0.5rem;
