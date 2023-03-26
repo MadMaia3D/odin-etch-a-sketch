@@ -2,6 +2,7 @@ function createPixel(width, height) {
     const pixel = document.createElement("div");
     pixel.style.width = `${width}%`;
     pixel.style.height = `${height}%`;
+    pixel.style.opacity = "0";
     pixel.classList.add("canvas-cell");
     pixel.addEventListener("mouseenter", paintPixel);
     return pixel;
@@ -32,14 +33,17 @@ function populateCanvas(numberOfRows, numberOfColumns) {
     canvas.append(fragment);
 }
 
-function paintPixel() {
+function paintPixel(event) {
+    const pixel = event.currentTarget;
     if (inputMethod === "click" && isMouseClicked === false) {
         return;
     }
     if (mode === "erase") {
-        this.style.background = "";
+        pixel.style.background = "";
         return;
     }
+
+    setPixelOpacity(pixel, brushOpacity);
 
     let paintColor = "";
     if (colorMode === "classic") paintColor = classicColor;
@@ -51,7 +55,14 @@ function paintPixel() {
     if (colorMode === "cold") paintColor = getRandomColor(150, 250);
     if (colorMode === "coldSoft") paintColor = getRandomColorSoft(150, 250);
 
-    this.style.background = paintColor;
+    pixel.style.background = paintColor;
+}
+
+function setPixelOpacity(pixel, brushOpacity) {
+    const oldOpacity = parseFloat(pixel.style.opacity);
+    const newOpacity = oldOpacity + brushOpacity;
+    const newOpacityClamped = Math.min(newOpacity, 1);
+    pixel.style.opacity = newOpacityClamped.toString();
 }
 
 const canvas = document.querySelector(".canvas");
@@ -151,6 +162,15 @@ function getRandomRainbowColorSoft(changeRate = 10) {
 
 function getColorPickerColor() {
     return colorPicker.value;
+}
+
+// #################### OPACITY BUTTON ####################
+let brushOpacity = 1;
+const opacitySlider = document.querySelector(".opacity .slider");
+opacitySlider.addEventListener("change", setBrushOpacity);
+
+function setBrushOpacity(event) {
+    brushOpacity = event.currentTarget.value / 100;
 }
 
 // #################### ERASE BUTTON ####################
