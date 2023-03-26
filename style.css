@@ -171,6 +171,9 @@ body {
 
     cursor: pointer;
 }
+.option.color button {
+    width: 100px;
+}
 .option button:active {
     background: var(--color-golden-dark);
     color: var(--color-device-dark);

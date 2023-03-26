@@ -44,9 +44,12 @@ function paintPixel() {
     let paintColor = "";
     if (colorMode === "classic") paintColor = classicColor;
     if (colorMode === "color") paintColor = getColorPickerColor();
-    if (colorMode === "warm") paintColor = getRandomWarmColor();
-    if (colorMode === "cold") paintColor = getRandomColdColor();
     if (colorMode === "rainbow") paintColor = getRandomRainbowColor();
+    if (colorMode === "rainbowSoft") paintColor = getRandomRainbowColorSoft();
+    if (colorMode === "warm") paintColor = getRandomWarmColor();
+    if (colorMode === "warmSoft") paintColor = getRandomWarmColorSoft();
+    if (colorMode === "cold") paintColor = getRandomColdColor();
+    if (colorMode === "coldSoft") paintColor = getRandomColdColorSoft();
 
     this.style.background = paintColor;
 }
@@ -89,7 +92,16 @@ document.addEventListener("mouseup", () => {
 
 let colorModeIndex = 0;
 let colorMode = "classic";
-const COLOR_MODE_LIST = ["classic", "color", "rainbow", "warm", "cold"];
+const COLOR_MODE_LIST = [
+    "classic",
+    "color",
+    "rainbow",
+    "rainbowSoft",
+    "warm",
+    "warmSoft",
+    "cold",
+    "coldSoft",
+];
 const classicColor = "#444";
 
 const colorButton = document.querySelector(".option.color button");
@@ -109,25 +121,61 @@ function setColorMethod(event) {
         colorPicker.classList.add("hide");
     }
 }
+// #################### COLOR MODES ####################
+let softWarmHue = 0;
+let isWarmHueIncreasing = true;
+const softWarmChangeRate = 5;
+
+let softColdHue = 200;
+let isColdHueIncreasing = true;
+const softColdChangeRate = 5;
+
+let softRainbowHue = 0;
+const softRainbowChangeRate = 10;
+
+const saturation = "100%";
+const lightness = "60%";
 
 function getRandomWarmColor() {
-    const h = Math.round(Math.random() * 60);
-    const s = "100%";
-    const l = "60%";
-    return `HSL(${h},${s},${l})`;
+    const hue = Math.round(Math.random() * 50);
+    return `HSL(${hue},${saturation},${lightness})`;
 }
+
 function getRandomColdColor() {
-    const h = Math.round(Math.random() * 50 + 200);
-    const s = "100%";
-    const l = "60%";
-    return `HSL(${h},${s},${l})`;
+    const hue = Math.round(Math.random() * 50 + 200);
+    return `HSL(${hue},${saturation},${lightness})`;
 }
+
+function getRandomWarmColorSoft() {
+    if (softWarmHue > 50) isWarmHueIncreasing = false;
+    if (softWarmHue < 0) isWarmHueIncreasing = true;
+
+    softWarmHue += isWarmHueIncreasing
+        ? softWarmChangeRate
+        : -softWarmChangeRate;
+    return `HSL(${softWarmHue},${saturation},${lightness})`;
+}
+
+function getRandomColdColorSoft() {
+    if (softColdHue > 250) isColdHueIncreasing = false;
+    if (softColdHue < 200) isColdHueIncreasing = true;
+
+    softColdHue += isColdHueIncreasing
+        ? softColdChangeRate
+        : -softColdChangeRate;
+    return `HSL(${softColdHue},${saturation},${lightness})`;
+}
+
 function getRandomRainbowColor() {
-    const h = Math.floor(Math.random() * 259);
-    const s = "100%";
-    const l = "60%";
-    return `HSL(${h},${s},${l})`;
+    const hue = Math.floor(Math.random() * 359);
+    return `HSL(${hue},${saturation},${lightness})`;
 }
+
+function getRandomRainbowColorSoft() {
+    softRainbowHue += softRainbowChangeRate;
+    return `HSL(${softRainbowHue},${saturation},${lightness})`;
+}
+
 function getColorPickerColor() {
     return colorPicker.value;
 }
