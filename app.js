@@ -52,12 +52,14 @@ function paintPixel(event) {
 function getFinalPaintColor() {
     if (colorMode === "classic") return classicColor;
     if (colorMode === "color") return getColorPickerColor();
-    if (colorMode === "rainbow") return getRandomColor(0, 360);
-    if (colorMode === "rainbowSoft") return getRandomRainbowColorSoft();
-    if (colorMode === "warm") return getRandomColor(0, 50);
-    if (colorMode === "warmSoft") return getRandomColorSoft(0, 50);
-    if (colorMode === "cold") return getRandomColor(150, 250);
-    if (colorMode === "coldSoft") return getRandomColorSoft(150, 250);
+    if (colorMode === "rainbow") return hslToString(getRandomColor(0, 360));
+    if (colorMode === "rainbowSoft")
+        return hslToString(getRandomRainbowColorSoft());
+    if (colorMode === "warm") return hslToString(getRandomColor(0, 50));
+    if (colorMode === "warmSoft") return hslToString(getRandomColorSoft(0, 50));
+    if (colorMode === "cold") return hslToString(getRandomColor(150, 250));
+    if (colorMode === "coldSoft")
+        return hslToString(getRandomColorSoft(150, 250));
 }
 
 function setPixelOpacity(pixel, brushOpacity) {
@@ -144,7 +146,8 @@ const lightness = "60%";
 function getRandomColor(minHue, maxHue) {
     const hueSpan = Math.abs(maxHue - minHue);
     const hue = Math.round(Math.random() * hueSpan + minHue);
-    return `HSL(${hue},${saturation},${lightness})`;
+    return { hue: hue, saturation: saturation, lightness: lightness };
+    // return `HSL(${hue},${saturation},${lightness})`;
 }
 
 function getRandomColorSoft(minHue, maxHue, changeRate = 5) {
@@ -154,12 +157,20 @@ function getRandomColorSoft(minHue, maxHue, changeRate = 5) {
     softHue = Math.max(minHue, Math.min(softHue, maxHue));
     softHue += isSoftHueIncreasing ? changeRate : -changeRate;
 
-    return `HSL(${softHue},${saturation},${lightness})`;
+    return { hue: softHue, saturation: saturation, lightness: lightness };
 }
 
 function getRandomRainbowColorSoft(changeRate = 10) {
     softRainbowHue += changeRate;
-    return `HSL(${softRainbowHue},${saturation},${lightness})`;
+    return {
+        hue: softRainbowHue,
+        saturation: saturation,
+        lightness: lightness,
+    };
+}
+
+function hslToString(HSL) {
+    return `HSL(${HSL.hue},${HSL.saturation},${HSL.lightness})`;
 }
 
 function getColorPickerColor() {
