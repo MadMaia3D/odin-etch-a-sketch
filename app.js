@@ -140,8 +140,8 @@ function setColorMethod(event) {
 let softHue = 0;
 let isSoftHueIncreasing = true;
 let softRainbowHue = 0;
-const saturation = "100%";
-const lightness = "60%";
+const saturation = 1;
+const lightness = 0.6;
 
 function getRandomColor(minHue, maxHue) {
     const hueSpan = Math.abs(maxHue - minHue);
@@ -175,7 +175,7 @@ function getColorPickerColor() {
 
 // #################### COLOR CONVERSION ####################
 function hslToString(HSL) {
-    return `HSL(${HSL.hue},${HSL.saturation},${HSL.lightness})`;
+    return `HSL(${HSL.hue},${HSL.saturation * 100}%,${HSL.lightness * 100}%)`;
 }
 
 function hexToRgb(hex) {
