@@ -4,6 +4,7 @@ import {
     hexToRgb,
     stringToRgb,
     rgbToString,
+    mixRGBA,
 } from "./colorConversionFunctions.js";
 
 import {
@@ -84,8 +85,11 @@ function calculatePaintFinalColor(paintColorRgb, alpha, currentColorString) {
         return { r: r, g: g, b: b, a: a };
     }
 
+    const currentColor = stringToRgb(currentColorString);
+
     paintColorRgb.a = alpha;
-    return paintColorRgb;
+    const paintColorRgba = mixRGBA(currentColor, paintColorRgb);
+    return paintColorRgba;
 }
 
 function getPaintColorRGB() {
@@ -157,7 +161,7 @@ const COLOR_MODE_LIST = [
     "cold",
     "coldSoft",
 ];
-const classicColor = "#444444";
+const classicColor = "#555555";
 
 const colorButton = document.querySelector(".option.color button");
 const colorPicker = document.querySelector(".option.color .color-picker");

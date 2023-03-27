@@ -69,3 +69,27 @@ export function rgbToString(rgb, alpha = "") {
     }
     return `rgba(${rgb.r},${rgb.g},${rgb.b},1)`;
 }
+
+// var base = [69, 109, 160, 1];
+// var added = [61, 47, 82, 0.8];
+
+// var mix = [];
+// mix[3] = 1 - (1 - added[3]) * (1 - base[3]); // alpha
+// mix[0] = Math.round((added[0] * added[3] / mix[3]) + (base[0] * base[3] * (1 - added[3]) / mix[3])); // red
+// mix[1] = Math.round((added[1] * added[3] / mix[3]) + (base[1] * base[3] * (1 - added[3]) / mix[3])); // green
+// mix[2] = Math.round((added[2] * added[3] / mix[3]) + (base[2] * base[3] * (1 - added[3]) / mix[3])); // blue
+
+export function mixRGBA(base, added) {
+    // debugger;
+    const newA = 1 - (1 - added.a) * (1 - base.a);
+    const newR = Math.round(
+        (added.r * added.a) / newA + (base.r * base.a * (1 - added.a)) / newA
+    );
+    const newG = Math.round(
+        (added.g * added.a) / newA + (base.g * base.a * (1 - added.a)) / newA
+    );
+    const newB = Math.round(
+        (added.b * added.a) / newA + (base.b * base.a * (1 - added.a)) / newA
+    );
+    return { r: newR, g: newG, b: newB, a: newA };
+}
