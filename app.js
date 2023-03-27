@@ -44,22 +44,22 @@ function paintPixel(event) {
     }
 
     setPixelOpacity(pixel, brushOpacity);
-    let paintColor = getFinalPaintColor();
+    let paintColorRGB = getFinalPaintColorRGB();
+    let paintColorString = `rgb(${paintColorRGB.r},${paintColorRGB.g},${paintColorRGB.b})`;
 
-    pixel.style.background = paintColor;
+    pixel.style.background = paintColorString;
 }
 
-function getFinalPaintColor() {
-    if (colorMode === "classic") return classicColor;
-    if (colorMode === "color") return getColorPickerColor();
-    if (colorMode === "rainbow") return hslToString(getRandomColor(0, 360));
+function getFinalPaintColorRGB() {
+    if (colorMode === "classic") return hexToRgb(classicColor);
+    if (colorMode === "color") return hexToRgb(getColorPickerColor());
+    if (colorMode === "rainbow") return hslToRgb(getRandomColor(0, 360));
     if (colorMode === "rainbowSoft")
-        return hslToString(getRandomRainbowColorSoft());
-    if (colorMode === "warm") return hslToString(getRandomColor(0, 50));
-    if (colorMode === "warmSoft") return hslToString(getRandomColorSoft(0, 50));
-    if (colorMode === "cold") return hslToString(getRandomColor(150, 250));
-    if (colorMode === "coldSoft")
-        return hslToString(getRandomColorSoft(150, 250));
+        return hslToRgb(getRandomRainbowColorSoft());
+    if (colorMode === "warm") return hslToRgb(getRandomColor(0, 50));
+    if (colorMode === "warmSoft") return hslToRgb(getRandomColorSoft(0, 50));
+    if (colorMode === "cold") return hslToRgb(getRandomColor(150, 250));
+    if (colorMode === "coldSoft") return hslToRgb(getRandomColorSoft(150, 250));
 }
 
 function setPixelOpacity(pixel, brushOpacity) {
@@ -141,12 +141,13 @@ let softHue = 0;
 let isSoftHueIncreasing = true;
 let softRainbowHue = 0;
 const saturation = 1;
-const lightness = 0.6;
+const lightness = 0.5;
 
 function getRandomColor(minHue, maxHue) {
     const hueSpan = Math.abs(maxHue - minHue);
     const hue = Math.round(Math.random() * hueSpan + minHue);
-    return { hue: hue, saturation: saturation, lightness: lightness };
+    const hsl = { hue: hue, saturation: saturation, lightness: lightness };
+    return hsl;
     // return `HSL(${hue},${saturation},${lightness})`;
 }
 
@@ -157,16 +158,21 @@ function getRandomColorSoft(minHue, maxHue, changeRate = 5) {
     softHue = Math.max(minHue, Math.min(softHue, maxHue));
     softHue += isSoftHueIncreasing ? changeRate : -changeRate;
 
-    return { hue: softHue, saturation: saturation, lightness: lightness };
+    const hsl = { hue: softHue, saturation: saturation, lightness: lightness };
+    return hsl;
 }
 
 function getRandomRainbowColorSoft(changeRate = 10) {
     softRainbowHue += changeRate;
-    return {
+    if (softRainbowHue >= 360) {
+        softRainbowHue = 0;
+    }
+    const hsl = {
         hue: softRainbowHue,
         saturation: saturation,
         lightness: lightness,
     };
+    return hsl;
 }
 
 function getColorPickerColor() {
@@ -176,6 +182,36 @@ function getColorPickerColor() {
 // #################### COLOR CONVERSION ####################
 function hslToString(HSL) {
     return `HSL(${HSL.hue},${HSL.saturation * 100}%,${HSL.lightness * 100}%)`;
+}
+
+function hslToRgb(HSL) {
+    let r, g, b;
+    let h = HSL.hue / 360;
+    let s = HSL.saturation;
+    let l = HSL.lightness;
+
+    if (HSL.saturation == 0) {
+        r = g = b = HSL.lightness;
+    } else {
+        const hue2rgb = function hue2rgb(p, q, t) {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1 / 6) return p + (q - p) * 6 * t;
+            if (t < 1 / 2) return q;
+            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+            return p;
+        };
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        var p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1 / 3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1 / 3);
+    }
+    return {
+        r: Math.round(r * 255),
+        g: Math.round(g * 255),
+        b: Math.round(b * 255),
+    };
 }
 
 function hexToRgb(hex) {
