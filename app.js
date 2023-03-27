@@ -9,11 +9,11 @@ function createPixel(width, height) {
 }
 
 function clearAndRepopulateCanvas(numberOfRows, numberOfColumns) {
-    clearCanvas();
+    deleteCanvas();
     populateCanvas(numberOfRows, numberOfColumns);
 }
 
-function clearCanvas() {
+function deleteCanvas() {
     canvas.textContent = "";
 }
 
@@ -44,18 +44,20 @@ function paintPixel(event) {
     }
 
     setPixelOpacity(pixel, brushOpacity);
-
-    let paintColor = "";
-    if (colorMode === "classic") paintColor = classicColor;
-    if (colorMode === "color") paintColor = getColorPickerColor();
-    if (colorMode === "rainbow") paintColor = getRandomColor(0, 360);
-    if (colorMode === "rainbowSoft") paintColor = getRandomRainbowColorSoft();
-    if (colorMode === "warm") paintColor = getRandomColor(0, 50);
-    if (colorMode === "warmSoft") paintColor = getRandomColorSoft(0, 50);
-    if (colorMode === "cold") paintColor = getRandomColor(150, 250);
-    if (colorMode === "coldSoft") paintColor = getRandomColorSoft(150, 250);
+    let paintColor = getFinalPaintColor();
 
     pixel.style.background = paintColor;
+}
+
+function getFinalPaintColor() {
+    if (colorMode === "classic") return classicColor;
+    if (colorMode === "color") return getColorPickerColor();
+    if (colorMode === "rainbow") return getRandomColor(0, 360);
+    if (colorMode === "rainbowSoft") return getRandomRainbowColorSoft();
+    if (colorMode === "warm") return getRandomColor(0, 50);
+    if (colorMode === "warmSoft") return getRandomColorSoft(0, 50);
+    if (colorMode === "cold") return getRandomColor(150, 250);
+    if (colorMode === "coldSoft") return getRandomColorSoft(150, 250);
 }
 
 function setPixelOpacity(pixel, brushOpacity) {
