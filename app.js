@@ -117,7 +117,7 @@ const COLOR_MODE_LIST = [
     "cold",
     "coldSoft",
 ];
-const classicColor = "#444";
+const classicColor = "#444444";
 
 const colorButton = document.querySelector(".option.color button");
 const colorPicker = document.querySelector(".option.color .color-picker");
@@ -169,12 +169,24 @@ function getRandomRainbowColorSoft(changeRate = 10) {
     };
 }
 
+function getColorPickerColor() {
+    return colorPicker.value;
+}
+
+// #################### COLOR CONVERSION ####################
 function hslToString(HSL) {
     return `HSL(${HSL.hue},${HSL.saturation},${HSL.lightness})`;
 }
 
-function getColorPickerColor() {
-    return colorPicker.value;
+function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+        ? {
+              r: parseInt(result[1], 16),
+              g: parseInt(result[2], 16),
+              b: parseInt(result[3], 16),
+          }
+        : null;
 }
 
 // #################### OPACITY BUTTON ####################
