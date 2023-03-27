@@ -44,7 +44,7 @@ function paintPixel(event) {
     }
 
     setPixelOpacity(pixel, brushOpacity);
-    // let paintColorString = `rgb(${paintColor.r},${paintColor.g},${paintColor.b})`;
+
     const paintColor = getPaintColorRGB();
     const alpha = brushOpacity;
     const canvasCurrentColor = pixel.style.background;
@@ -53,9 +53,8 @@ function paintPixel(event) {
         alpha,
         canvasCurrentColor
     );
-    // debugger;
-    console.log(rgbToString(finalColor));
 
+    // debugger;
     pixel.style.background = rgbToString(finalColor);
 }
 
@@ -71,7 +70,8 @@ function calculatePaintFinalColor(paintColorRgb, alpha, currentColorString) {
         const a = alpha;
         return { r: r, g: g, b: b, a: a };
     }
-    return { r: 255, g: 0, b: 0 };
+
+    return { r: 255, g: 0, b: 0, a: 1 };
 }
 
 function getPaintColorRGB() {
@@ -245,6 +245,7 @@ function hexToRgb(hex) {
               r: parseInt(result[1], 16),
               g: parseInt(result[2], 16),
               b: parseInt(result[3], 16),
+              a: 1,
           }
         : null;
 }
@@ -252,9 +253,15 @@ function hexToRgb(hex) {
 function stringToRgb(rbgString) {
     const colorArr = rbgString
         .slice(rbgString.indexOf("(") + 1, rbgString.indexOf(")"))
-        .split(", ");
-    const rgb = { r: colorArr[0], g: colorArr[1], b: colorArr[2] };
-    return rgb;
+        .split(",");
+    const rgba = {
+        r: parseInt(colorArr[0]),
+        g: parseInt(colorArr[1]),
+        b: parseInt(colorArr[2]),
+    };
+    rgba.a = colorArr.length > 3 ? parseFloat(colorArr[3]) : 1;
+
+    return rgba;
 }
 
 function rgbToString(rgb, alpha = "") {
@@ -264,7 +271,7 @@ function rgbToString(rgb, alpha = "") {
     if (rgb.a) {
         return `rgba(${rgb.r},${rgb.g},${rgb.b},${rgb.a})`;
     }
-    return `rgb(${rgb.r},${rgb.g},${rgb.b})`;
+    return `rgba(${rgb.r},${rgb.g},${rgb.b},1)`;
 }
 
 // #################### OPACITY BUTTON ####################
