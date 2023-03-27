@@ -1,3 +1,17 @@
+import {
+    hslToString,
+    hslToRgb,
+    hexToRgb,
+    stringToRgb,
+    rgbToString,
+} from "./colorConversionFunctions.js";
+
+import {
+    getRandomColor,
+    getRandomColorSoft,
+    getRandomRainbowColorSoft,
+} from "./colorModesFunctions.js";
+
 function createPixel(width, height) {
     const pixel = document.createElement("div");
     pixel.style.width = `${width}%`;
@@ -54,12 +68,11 @@ function paintPixel(event) {
         canvasCurrentColor
     );
 
-    // debugger;
-    pixel.style.background = rgbToString(finalColor);
+    setPixel(pixel, finalColor);
 }
 
 function setPixel(pixel, rgba) {
-    pixel.style.background = rgba;
+    pixel.style.background = rgbToString(rgba);
 }
 
 function calculatePaintFinalColor(paintColorRgb, alpha, currentColorString) {
@@ -71,19 +84,22 @@ function calculatePaintFinalColor(paintColorRgb, alpha, currentColorString) {
         return { r: r, g: g, b: b, a: a };
     }
 
-    return { r: 255, g: 0, b: 0, a: 1 };
+    paintColorRgb.a = alpha;
+    return paintColorRgb;
 }
 
 function getPaintColorRGB() {
-    if (colorMode === "classic") return hexToRgb(classicColor);
-    if (colorMode === "color") return hexToRgb(getColorPickerColor());
-    if (colorMode === "rainbow") return hslToRgb(getRandomColor(0, 360));
-    if (colorMode === "rainbowSoft")
+    if (currentColorMode === "classic") return hexToRgb(classicColor);
+    if (currentColorMode === "color") return hexToRgb(getColorPickerColor());
+    if (currentColorMode === "rainbow") return hslToRgb(getRandomColor(0, 360));
+    if (currentColorMode === "rainbowSoft")
         return hslToRgb(getRandomRainbowColorSoft());
-    if (colorMode === "warm") return hslToRgb(getRandomColor(0, 50));
-    if (colorMode === "warmSoft") return hslToRgb(getRandomColorSoft(0, 50));
-    if (colorMode === "cold") return hslToRgb(getRandomColor(150, 250));
-    if (colorMode === "coldSoft") return hslToRgb(getRandomColorSoft(150, 250));
+    if (currentColorMode === "warm") return hslToRgb(getRandomColor(0, 50));
+    if (currentColorMode === "warmSoft")
+        return hslToRgb(getRandomColorSoft(0, 50));
+    if (currentColorMode === "cold") return hslToRgb(getRandomColor(150, 250));
+    if (currentColorMode === "coldSoft")
+        return hslToRgb(getRandomColorSoft(150, 250));
 }
 
 function setPixelOpacity(pixel, brushOpacity) {
@@ -130,7 +146,7 @@ document.addEventListener("mouseup", () => {
 // #################### COLOR BUTTON ####################
 
 let colorModeIndex = 0;
-let colorMode = "classic";
+let currentColorMode = "classic";
 const COLOR_MODE_LIST = [
     "classic",
     "color",
@@ -152,126 +168,17 @@ function setColorMethod(event) {
     colorModeIndex++;
     if (colorModeIndex >= COLOR_MODE_LIST.length) colorModeIndex = 0;
 
-    colorMode = COLOR_MODE_LIST[colorModeIndex];
-    event.currentTarget.textContent = colorMode;
-    if (colorMode === "color") {
+    currentColorMode = COLOR_MODE_LIST[colorModeIndex];
+    event.currentTarget.textContent = currentColorMode;
+    if (currentColorMode === "color") {
         colorPicker.classList.remove("hide");
     } else {
         colorPicker.classList.add("hide");
     }
 }
-// #################### COLOR MODES ####################
-let softHue = 0;
-let isSoftHueIncreasing = true;
-let softRainbowHue = 0;
-const saturation = 1;
-const lightness = 0.5;
-
-function getRandomColor(minHue, maxHue) {
-    const hueSpan = Math.abs(maxHue - minHue);
-    const hue = Math.round(Math.random() * hueSpan + minHue);
-    const hsl = { hue: hue, saturation: saturation, lightness: lightness };
-    return hsl;
-    // return `HSL(${hue},${saturation},${lightness})`;
-}
-
-function getRandomColorSoft(minHue, maxHue, changeRate = 5) {
-    if (softHue > maxHue) isSoftHueIncreasing = false;
-    if (softHue < minHue) isSoftHueIncreasing = true;
-
-    softHue = Math.max(minHue, Math.min(softHue, maxHue));
-    softHue += isSoftHueIncreasing ? changeRate : -changeRate;
-
-    const hsl = { hue: softHue, saturation: saturation, lightness: lightness };
-    return hsl;
-}
-
-function getRandomRainbowColorSoft(changeRate = 10) {
-    softRainbowHue += changeRate;
-    if (softRainbowHue >= 360) {
-        softRainbowHue = 0;
-    }
-    const hsl = {
-        hue: softRainbowHue,
-        saturation: saturation,
-        lightness: lightness,
-    };
-    return hsl;
-}
 
 function getColorPickerColor() {
     return colorPicker.value;
-}
-
-// #################### COLOR CONVERSION ####################
-function hslToString(HSL) {
-    return `HSL(${HSL.hue},${HSL.saturation * 100}%,${HSL.lightness * 100}%)`;
-}
-
-function hslToRgb(HSL) {
-    let r, g, b;
-    let h = HSL.hue / 360;
-    let s = HSL.saturation;
-    let l = HSL.lightness;
-
-    if (HSL.saturation == 0) {
-        r = g = b = HSL.lightness;
-    } else {
-        const hue2rgb = function hue2rgb(p, q, t) {
-            if (t < 0) t += 1;
-            if (t > 1) t -= 1;
-            if (t < 1 / 6) return p + (q - p) * 6 * t;
-            if (t < 1 / 2) return q;
-            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-            return p;
-        };
-        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-        var p = 2 * l - q;
-        r = hue2rgb(p, q, h + 1 / 3);
-        g = hue2rgb(p, q, h);
-        b = hue2rgb(p, q, h - 1 / 3);
-    }
-    return {
-        r: Math.round(r * 255),
-        g: Math.round(g * 255),
-        b: Math.round(b * 255),
-    };
-}
-
-function hexToRgb(hex) {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result
-        ? {
-              r: parseInt(result[1], 16),
-              g: parseInt(result[2], 16),
-              b: parseInt(result[3], 16),
-              a: 1,
-          }
-        : null;
-}
-
-function stringToRgb(rbgString) {
-    const colorArr = rbgString
-        .slice(rbgString.indexOf("(") + 1, rbgString.indexOf(")"))
-        .split(",");
-    const rgba = {
-        r: parseInt(colorArr[0]),
-        g: parseInt(colorArr[1]),
-        b: parseInt(colorArr[2]),
-    };
-    rgba.a = colorArr.length > 3 ? parseFloat(colorArr[3]) : 1;
-
-    return rgba;
-}
-
-function rgbToString(rgb, alpha = "") {
-    if (alpha) {
-        return `rgba(${rgb.r},${rgb.g},${rgb.b},${alpha})`;
-    }
-    if (rgb.a) {
-        return `rgba(${rgb.r},${rgb.g},${rgb.b},${rgb.a})`;
-    }
-    return `rgba(${rgb.r},${rgb.g},${rgb.b},1)`;
 }
 
 // #################### OPACITY BUTTON ####################
@@ -291,7 +198,7 @@ eraseButton.addEventListener("click", eraseCanvas);
 deviceFrame.addEventListener("animationend", resetDeviceAnimation);
 
 function eraseCanvas() {
-    for (cell of canvas.children) {
+    for (const cell of canvas.children) {
         cell.style.background = "";
     }
 
