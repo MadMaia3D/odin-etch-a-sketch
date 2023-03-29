@@ -93,17 +93,24 @@ function calculatePaintFinalColor(paintColorRgb, alpha, currentColorString) {
 }
 
 function getPaintColorRGB() {
-    if (currentColorMode === "classic") return hexToRgb(classicColor);
-    if (currentColorMode === "color") return hexToRgb(getColorPickerColor());
-    if (currentColorMode === "rainbow") return hslToRgb(getRandomColor(0, 360));
-    if (currentColorMode === "rainbowSoft")
-        return hslToRgb(getRandomRainbowColorSoft());
-    if (currentColorMode === "warm") return hslToRgb(getRandomColor(0, 50));
-    if (currentColorMode === "warmSoft")
-        return hslToRgb(getRandomColorSoft(0, 50));
-    if (currentColorMode === "cold") return hslToRgb(getRandomColor(150, 250));
-    if (currentColorMode === "coldSoft")
-        return hslToRgb(getRandomColorSoft(150, 250));
+    switch (currentColorMode) {
+        case "classic":
+            return hexToRgb(classicColor);
+        case "color":
+            return hexToRgb(getColorPickerColor());
+        case "rainbow":
+            return hslToRgb(getRandomColor(0, 360));
+        case "rainbowSoft":
+            return hslToRgb(getRandomRainbowColorSoft());
+        case "warm":
+            return hslToRgb(getRandomColor(0, 50));
+        case "warmSoft":
+            return hslToRgb(getRandomColorSoft(0, 50));
+        case "cold":
+            return hslToRgb(getRandomColor(150, 250));
+        case "coldSoft":
+            return hslToRgb(getRandomColorSoft(150, 250));
+    }
 }
 
 function setPixelOpacity(pixel, brushOpacity) {
