@@ -14,9 +14,54 @@ import {
     mixRGBwithRGBA,
 } from "./colorFunctions.js";
 
-const canvas = document.querySelector(".canvas");
+// #################### SETUP ####################
 const canvasRowsN = 50;
 const canvasColumnsN = Math.round((canvasRowsN * 4) / 3);
+
+let drawMode = "draw";
+let inputMethod = "hover";
+let isMouseClicked = false;
+
+let colorModeIndex = 0;
+let currentColorMode = "classic";
+const classicColor = "#555555";
+const COLOR_MODE_LIST = [
+    "classic",
+    "color",
+    "rainbow",
+    "rainbowSoft",
+    "warm",
+    "warmSoft",
+    "cold",
+    "coldSoft",
+];
+let brushOpacity = 1;
+
+const modeButton = document.querySelector(".option.mode button");
+const inputButton = document.querySelector(".option.input button");
+const colorButton = document.querySelector(".option.color button");
+const colorPicker = document.querySelector(".option.color .color-picker");
+const opacitySlider = document.querySelector(".opacity .slider");
+const eraseButton = document.querySelector(".option.erase button");
+const deviceFrame = document.querySelector(".etch-a-sketch");
+const resolutionSlider = document.querySelector(".option.resolution input");
+const canvas = document.querySelector(".canvas");
+
+document.addEventListener("mousedown", () => {
+    isMouseClicked = true;
+});
+document.addEventListener("mouseup", () => {
+    isMouseClicked = false;
+});
+
+modeButton.addEventListener("click", setMode);
+inputButton.addEventListener("click", setInputMethod);
+colorButton.addEventListener("click", setColorMethod);
+opacitySlider.addEventListener("change", setBrushOpacity);
+eraseButton.addEventListener("click", eraseCanvas);
+deviceFrame.addEventListener("animationend", resetDeviceAnimation);
+resolutionSlider.addEventListener("change", setResolution);
+
 clearAndRepopulateCanvas(canvasRowsN, canvasColumnsN);
 
 // #################### CANVAS FUNCTIONS ####################
@@ -39,6 +84,7 @@ function clearAndRepopulateCanvas(numberOfRows, numberOfColumns) {
 function deleteCanvas() {
     canvas.innerHTML = "";
 }
+
 function populateCanvas(numberOfRows, numberOfColumns) {
     const fragment = document.createDocumentFragment();
     const cellPercentageHeight = 100 / numberOfRows;
@@ -61,7 +107,7 @@ function paintPixel(event) {
     if (inputMethod === "click" && isMouseClicked === false) {
         return;
     }
-    if (mode === "erase") {
+    if (drawMode === "erase") {
         pixel.style.background = "";
         return;
     }
@@ -100,55 +146,20 @@ function getSelectedColor() {
 }
 
 // #################### MODE ####################
-let mode = "draw";
-const modeButton = document.querySelector(".option.mode button");
-
-modeButton.addEventListener("click", setMode);
 
 function setMode(event) {
-    mode = mode === "draw" ? "erase" : "draw";
-    event.currentTarget.textContent = mode;
+    drawMode = drawMode === "draw" ? "erase" : "draw";
+    event.currentTarget.textContent = drawMode;
 }
 
 // #################### INPUT ####################
-let inputMethod = "hover";
-let isMouseClicked = false;
 
-const inputButton = document.querySelector(".option.input button");
-
-inputButton.addEventListener("click", setInputMethod);
 function setInputMethod(event) {
     inputMethod = inputMethod === "hover" ? "click" : "hover";
     event.currentTarget.textContent = inputMethod;
 }
 
-document.addEventListener("mousedown", () => {
-    isMouseClicked = true;
-});
-document.addEventListener("mouseup", () => {
-    isMouseClicked = false;
-});
 // #################### COLOR BUTTON ####################
-
-let colorModeIndex = 0;
-let currentColorMode = "classic";
-const COLOR_MODE_LIST = [
-    "classic",
-    "color",
-    "rainbow",
-    "rainbowSoft",
-    "warm",
-    "warmSoft",
-    "cold",
-    "coldSoft",
-];
-const classicColor = "#555555";
-
-const colorButton = document.querySelector(".option.color button");
-const colorPicker = document.querySelector(".option.color .color-picker");
-
-colorButton.addEventListener("click", setColorMethod);
-
 function setColorMethod(event) {
     colorModeIndex++;
     if (colorModeIndex >= COLOR_MODE_LIST.length) colorModeIndex = 0;
@@ -165,23 +176,12 @@ function setColorMethod(event) {
 function getColorPickerColor() {
     return colorPicker.value;
 }
-
 // #################### OPACITY BUTTON ####################
-let brushOpacity = 1;
-const opacitySlider = document.querySelector(".opacity .slider");
-opacitySlider.addEventListener("change", setBrushOpacity);
 
 function setBrushOpacity(event) {
     brushOpacity = event.currentTarget.value / 100;
 }
-
 // #################### ERASE BUTTON ####################
-const eraseButton = document.querySelector(".option.erase button");
-const deviceFrame = document.querySelector(".etch-a-sketch");
-
-eraseButton.addEventListener("click", eraseCanvas);
-deviceFrame.addEventListener("animationend", resetDeviceAnimation);
-
 function eraseCanvas() {
     for (const cell of canvas.children) {
         cell.style.background = "";
@@ -196,10 +196,6 @@ function resetDeviceAnimation(event) {
 }
 
 // #################### RESOLUTION CONTROL ####################
-const resolutionSlider = document.querySelector(".option.resolution input");
-
-resolutionSlider.addEventListener("change", setResolution);
-
 function setResolution(event) {
     const canvasRowsN = event.currentTarget.value;
     const canvasColumnsN = Math.round((canvasRowsN * 4) / 3);
