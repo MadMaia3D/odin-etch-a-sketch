@@ -11,7 +11,15 @@ import {
     getRandomColor,
     getRandomColorSoft,
     getRandomRainbowColorSoft,
-} from "./colorModesFunctions.js";
+    mixRGBwithRGBA,
+} from "./colorFunctions.js";
+
+const canvas = document.querySelector(".canvas");
+const canvasRowsN = 50;
+const canvasColumnsN = Math.round((canvasRowsN * 4) / 3);
+clearAndRepopulateCanvas(canvasRowsN, canvasColumnsN);
+
+// #################### CANVAS FUNCTIONS ####################
 
 function createPixel(width, height) {
     const pixel = document.createElement("div");
@@ -31,7 +39,6 @@ function clearAndRepopulateCanvas(numberOfRows, numberOfColumns) {
 function deleteCanvas() {
     canvas.innerHTML = "";
 }
-
 function populateCanvas(numberOfRows, numberOfColumns) {
     const fragment = document.createDocumentFragment();
     const cellPercentageHeight = 100 / numberOfRows;
@@ -48,6 +55,7 @@ function populateCanvas(numberOfRows, numberOfColumns) {
     canvas.append(fragment);
 }
 
+// #################### PAINTING ####################
 function paintPixel(event) {
     const pixel = event.currentTarget;
     if (inputMethod === "click" && isMouseClicked === false) {
@@ -58,34 +66,16 @@ function paintPixel(event) {
         return;
     }
 
-    setPixelOpacity(pixel, brushOpacity);
-
     const paintColor = getSelectedColor();
     const alpha = brushOpacity;
     const canvasCurrentColor = pixel.style.background;
-    const finalRGBA = calculatePaintRGBA(paintColor, alpha, canvasCurrentColor);
+    const finalRGBA = mixRGBwithRGBA(paintColor, alpha, canvasCurrentColor);
 
-    setPixel(pixel, finalRGBA);
+    setPixelColor(pixel, finalRGBA);
 }
 
-function setPixel(pixel, rgba) {
+function setPixelColor(pixel, rgba) {
     pixel.style.background = rgbToString(rgba);
-}
-
-function calculatePaintRGBA(paintColorRgb, alpha, currentColorString) {
-    if (!currentColorString) {
-        const r = paintColorRgb.r;
-        const g = paintColorRgb.g;
-        const b = paintColorRgb.b;
-        const a = alpha;
-        return { r: r, g: g, b: b, a: a };
-    }
-
-    const currentColor = stringToRgb(currentColorString);
-
-    paintColorRgb.a = alpha;
-    const paintColorRgba = mixRGBA(currentColor, paintColorRgb);
-    return paintColorRgba;
 }
 
 function getSelectedColor() {
@@ -109,18 +99,6 @@ function getSelectedColor() {
     }
 }
 
-function setPixelOpacity(pixel, brushOpacity) {
-    const oldOpacity = parseFloat(pixel.style.opacity);
-    const newOpacity = oldOpacity + brushOpacity;
-    const newOpacityClamped = Math.min(newOpacity, 1);
-    pixel.style.opacity = newOpacityClamped.toString();
-}
-
-const canvas = document.querySelector(".canvas");
-const canvasRowsN = 50;
-const canvasColumnsN = Math.round((canvasRowsN * 4) / 3);
-clearAndRepopulateCanvas(canvasRowsN, canvasColumnsN);
-
 // #################### MODE ####################
 let mode = "draw";
 const modeButton = document.querySelector(".option.mode button");
@@ -131,6 +109,7 @@ function setMode(event) {
     mode = mode === "draw" ? "erase" : "draw";
     event.currentTarget.textContent = mode;
 }
+
 // #################### INPUT ####################
 let inputMethod = "hover";
 let isMouseClicked = false;

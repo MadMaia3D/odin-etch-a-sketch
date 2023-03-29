@@ -1,3 +1,5 @@
+import { stringToRgb, mixRGBA } from "./colorConversionFunctions.js";
+
 let softHue = 0;
 let isSoftHueIncreasing = true;
 let softRainbowHue = 0;
@@ -33,4 +35,20 @@ export function getRandomRainbowColorSoft(changeRate = 10) {
         lightness: lightness,
     };
     return hsl;
+}
+
+export function mixRGBwithRGBA(rgb, alpha, currentColorString) {
+    if (!currentColorString) {
+        const r = rgb.r;
+        const g = rgb.g;
+        const b = rgb.b;
+        const a = alpha;
+        return { r: r, g: g, b: b, a: a };
+    }
+
+    const currentColor = stringToRgb(currentColorString);
+
+    rgb.a = alpha;
+    const paintColorRgba = mixRGBA(currentColor, rgb);
+    return paintColorRgba;
 }
