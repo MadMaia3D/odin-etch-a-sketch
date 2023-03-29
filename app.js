@@ -29,7 +29,7 @@ function clearAndRepopulateCanvas(numberOfRows, numberOfColumns) {
 }
 
 function deleteCanvas() {
-    canvas.textContent = "";
+    canvas.innerHTML = "";
 }
 
 function populateCanvas(numberOfRows, numberOfColumns) {
@@ -39,8 +39,8 @@ function populateCanvas(numberOfRows, numberOfColumns) {
     for (let column = 0; column < numberOfColumns; column++) {
         for (let row = 0; row < numberOfRows; row++) {
             const pixel = createPixel(
-                cellPercentageHeight,
-                cellPercentageWidth
+                cellPercentageWidth,
+                cellPercentageHeight
             );
             fragment.append(pixel);
         }
@@ -114,10 +114,9 @@ function setPixelOpacity(pixel, brushOpacity) {
 }
 
 const canvas = document.querySelector(".canvas");
-const canvasWidth = canvas.getBoundingClientRect().width;
-const canvasRowsN = 72;
-const canvasColumnsN = (canvasRowsN * 4) / 3;
-clearAndRepopulateCanvas(canvasColumnsN, canvasRowsN);
+const canvasRowsN = 50;
+const canvasColumnsN = Math.round((canvasRowsN * 4) / 3);
+clearAndRepopulateCanvas(canvasRowsN, canvasColumnsN);
 
 // #################### MODE ####################
 let mode = "draw";
@@ -212,4 +211,15 @@ function eraseCanvas() {
 function resetDeviceAnimation(event) {
     event.currentTarget.classList.remove("shake");
     event.currentTarget.offsetHeight;
+}
+
+// #################### RESOLUTION CONTROL ####################
+const resolutionSlider = document.querySelector(".option.resolution input");
+
+resolutionSlider.addEventListener("change", setResolution);
+
+function setResolution(event) {
+    const canvasRowsN = event.currentTarget.value;
+    const canvasColumnsN = Math.round((canvasRowsN * 4) / 3);
+    clearAndRepopulateCanvas(canvasRowsN, canvasColumnsN);
 }
