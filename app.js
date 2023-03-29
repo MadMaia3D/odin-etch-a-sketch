@@ -60,23 +60,19 @@ function paintPixel(event) {
 
     setPixelOpacity(pixel, brushOpacity);
 
-    const paintColor = getPaintColorRGB();
+    const paintColor = getSelectedColor();
     const alpha = brushOpacity;
     const canvasCurrentColor = pixel.style.background;
-    const finalColor = calculatePaintFinalColor(
-        paintColor,
-        alpha,
-        canvasCurrentColor
-    );
+    const finalRGBA = calculatePaintRGBA(paintColor, alpha, canvasCurrentColor);
 
-    setPixel(pixel, finalColor);
+    setPixel(pixel, finalRGBA);
 }
 
 function setPixel(pixel, rgba) {
     pixel.style.background = rgbToString(rgba);
 }
 
-function calculatePaintFinalColor(paintColorRgb, alpha, currentColorString) {
+function calculatePaintRGBA(paintColorRgb, alpha, currentColorString) {
     if (!currentColorString) {
         const r = paintColorRgb.r;
         const g = paintColorRgb.g;
@@ -92,7 +88,7 @@ function calculatePaintFinalColor(paintColorRgb, alpha, currentColorString) {
     return paintColorRgba;
 }
 
-function getPaintColorRGB() {
+function getSelectedColor() {
     switch (currentColorMode) {
         case "classic":
             return hexToRgb(classicColor);
