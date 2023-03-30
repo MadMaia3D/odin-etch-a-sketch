@@ -20,7 +20,7 @@
     --color-device-dark: hsl(357, 89%, 38%);
     --color-golden: #dd9f32;
     --color-golden-dark: hsl(38, 72%, 48%);
-    --color-canvas: #babac4;
+    --color-canvas: #cacad4;
     /* device emboss effects */
     --device-emboss-light: inset 0.3rem 0.3rem 0.5rem 0.3rem
         rgba(255, 255, 255, 0.3);
