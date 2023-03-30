@@ -8,6 +8,8 @@ Made with HTML, CSS and JS.
 
 -   Experiment with the live version [here](https://madmaia3d.github.io/odin-etch-a-sketch/).
 
+![Preview Image](./resources/preview_image.png)
+
 ## Features:
 
 -   **Draw** or **Erase** pixels either by **Clicking** or **Hovering**.
