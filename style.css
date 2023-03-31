@@ -225,6 +225,7 @@ input[type="range"] {
     width: 100px;
     background: none;
 }
+
 input[type="range"]::-webkit-slider-runnable-track {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -238,6 +239,30 @@ input[type="range"]::-webkit-slider-runnable-track {
     border-radius: 4px;
 }
 input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    margin: -4px 0 0 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-golden);
+}
+
+input[type="range"]::-moz-range-track {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    background: var(--color-device-dark);
+    --var-shadow: inset 2px 2px 1px rgba(53, 0, 0, 0.5);
+    --var-highlight: inset -2px -2px 1px rgba(255, 44, 44, 0.5);
+    box-shadow: var(--var-shadow), var(--var-highlight);
+    height: 8px;
+    border-radius: 4px;
+}
+input[type="range"]::-moz-range-thumb {
     -webkit-appearance: none;
     -moz-appearance: none;
     -ms-appearance: none;
