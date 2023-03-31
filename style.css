@@ -196,6 +196,7 @@ body {
     border: none;
     cursor: pointer;
 }
+
 .color-picker::-webkit-color-swatch-wrapper {
     margin: 0;
     padding: 0;
@@ -209,6 +210,14 @@ body {
         var(--buttons-inside-emboss-shadow), var(--buttons-outside-emboss-light),
         var(--buttons-outside-emboss-shadow);
 }
+.color-picker::-moz-color-swatch {
+    border-radius: 50%;
+    border: none;
+    box-shadow: var(--buttons-inside-emboss-light),
+        var(--buttons-inside-emboss-shadow), var(--buttons-outside-emboss-light),
+        var(--buttons-outside-emboss-shadow);
+}
+
 .hide {
     display: none;
 }
