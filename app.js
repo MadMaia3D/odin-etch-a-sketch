@@ -64,6 +64,8 @@ resolutionSlider.addEventListener("change", setResolution);
 
 clearAndRepopulateCanvas(canvasRowsN, canvasColumnsN);
 
+canvas.addEventListener("mousemove", paintCanvas);
+
 // #################### CANVAS FUNCTIONS ####################
 
 function createPixel(width, height) {
@@ -72,7 +74,6 @@ function createPixel(width, height) {
     pixel.style.height = `${height}%`;
     pixel.style.background = "";
     pixel.classList.add("canvas-cell");
-    pixel.addEventListener("mouseenter", paintPixel);
     return pixel;
 }
 
@@ -102,22 +103,31 @@ function populateCanvas(numberOfRows, numberOfColumns) {
 }
 
 // #################### PAINTING ####################
-function paintPixel(event) {
-    const pixel = event.currentTarget;
+function paintCanvas(event) {
+    if (!event.target.classList.contains("canvas-cell")) {
+        return;
+    }
     if (inputMethod === "click" && isMouseClicked === false) {
         return;
     }
     if (drawMode === "erase") {
-        pixel.style.background = "";
+        erasePixel(event.target);
         return;
     }
+    paintPixel(event.target);
+}
 
+function paintPixel(pixel) {
     const paintColor = getSelectedColor();
     const alpha = brushOpacity;
     const canvasCurrentColor = pixel.style.background;
     const finalRGBA = mixRGBwithRGBA(paintColor, alpha, canvasCurrentColor);
 
     setPixelColor(pixel, finalRGBA);
+}
+
+function erasePixel(pixel) {
+    pixel.style.background = "";
 }
 
 function setPixelColor(pixel, rgba) {
