@@ -124,10 +124,12 @@ body {
     flex-wrap: wrap;
     box-shadow: var(--canvas-emboss-light), var(--canvas-emboss-shadow),
         var(--canvas-shadow);
+
+    --cell-transition: all 0.1s;
 }
 .canvas-cell {
     mix-blend-mode: multiply;
-    transition: all 0.1s;
+    transition: var(--cell-transition);
 }
 /* ########## CONTROLS ########## */
 .controls {

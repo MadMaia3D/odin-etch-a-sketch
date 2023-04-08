@@ -193,6 +193,7 @@ function setBrushOpacity(event) {
 }
 // #################### ERASE BUTTON ####################
 function eraseCanvas() {
+    canvas.style.setProperty("--cell-transition", "all 0.7s");
     for (const cell of canvas.children) {
         cell.style.background = "";
     }
@@ -203,6 +204,7 @@ function eraseCanvas() {
 function resetDeviceAnimation(event) {
     event.currentTarget.classList.remove("shake");
     event.currentTarget.offsetHeight;
+    canvas.style.setProperty("--cell-transition", "all 0.1s");
 }
 
 // #################### RESOLUTION CONTROL ####################
