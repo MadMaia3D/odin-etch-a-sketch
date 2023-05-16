@@ -1,7 +1,7 @@
 # Etch-a-sketch
 
 This is my entry for [The Odin Project](https://www.theodinproject.com/)'s Etch-A-Sketch project.
-[Link to the Assignment](https://www.theodinproject.com/paths/foundations/courses/foundations/lessons/rock-paper-scissors).  
+[Link to the Assignment](https://www.theodinproject.com/lessons/foundations-etch-a-sketch).  
 Made with HTML, CSS and JS.
 
 ## Preview:
